@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // Firebase & YouTube
-import { dbService, firebaseConfig } from 'api/fbase';
+import { dbService } from 'api/fbase';
 import youtube from 'api/youtube';
 
 // 스타일 관련
@@ -18,46 +18,54 @@ import Header from 'components/Header';
 import OnBoarding from 'components/OnBoarding';
 import ExerciseHeading from 'components/ExerciseHeading';
 
-// 데이터
-import exVids from 'data/exerciseVideos';
-import exerciseNames from 'data/exerciseNames';
-
 const Home = () => {
-  const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [panelVisible, setPanelVisible] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
+  const [exercises, setExercises] = useState([]);
+  const [videos, setVideos] = useState([]);
 
-  const [bodyParts, setBodyParts] = useState([]);
-  const getBodyParts = async () => {
-    const bodyParts = await dbService.collection('bodyParts').get();
-    bodyParts.forEach((document) => console.log(document.data()));
+  const getExercises = async () => {
+    const exercises = await dbService
+      .collection('exercises')
+      .orderBy('id', 'desc')
+      .get();
+    exercises.forEach((document) => {
+      const exObject = {
+        ...document.data(),
+        id: document.id,
+      };
+      setExercises((prev) => [exObject, ...prev]);
+    });
+  };
+
+  const getVideos = async (term) => {
+    const videos = await dbService
+      .collection('videos')
+      .where('term', '==', term)
+      .get();
+    videos.forEach((document) => {
+      const videoObject = {
+        ...document.data(),
+      };
+      setVideos((prev) => [videoObject, ...prev]);
+    });
   };
 
   useEffect(() => {
-    getBodyParts();
+    getExercises();
+    return () => {
+      setExercises([]);
+      setSelectedExercise('');
+    };
   }, []);
-  const getVideos = (name) => {
-    setVideos(exVids[name]);
-    // console.log(exVids);
-  };
-
-  const searchVideos = async (term, results) => {
-    const response = await youtube.get('/search', {
-      params: {
-        part: 'snippet',
-        q: term,
-        maxResults: results,
-      },
-    });
-    console.log(response.data.items);
-  };
 
   // 검색결과 클릭했을 때 모달로 영상 표시
 
   const handleVideoSelect = (video) => {
     setSelectedVideo(video);
+    console.log(video);
     setVideoVisible(true);
   };
 
@@ -65,6 +73,7 @@ const Home = () => {
 
   const handleVideoClose = () => {
     setVideoVisible(false);
+    setSelectedVideo('');
   };
 
   // 검색 모드 토글
@@ -75,10 +84,9 @@ const Home = () => {
 
   // 운동 이름 선택하고 비디오 검색
 
-  const handleSearch = (exercise) => {
-    const name = exercise.name;
-    getVideos(name);
-    setSelectedExercise(exercise);
+  const handleExerciseSelect = async (exercise) => {
+    await setSelectedExercise(exercise);
+    getVideos(exercise.displayName);
     setPanelVisible(false);
   };
 
@@ -91,17 +99,6 @@ const Home = () => {
   return (
     <MainWrapper>
       <Header handleClick={handleReset} className="header" />
-      {false ||
-        exerciseNames.map((exercise, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              searchVideos(exercise.displayName, 12);
-            }}
-          >
-            {exercise.displayName}
-          </button>
-        ))}
       {videos.length > 0 ? (
         <>
           <div className="exercise-heading">
@@ -119,7 +116,8 @@ const Home = () => {
       <SearchPanel
         panelVisible={panelVisible}
         handlePanelVisible={handlePanelVisible}
-        handleSearch={handleSearch}
+        handleExerciseSelect={handleExerciseSelect}
+        exercises={exercises}
       />
       {selectedVideo && (
         <VideoDetail

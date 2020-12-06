@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ExerciseItem from './ExerciseItem';
 
-function ExerciseList({ exercises, selectedBodyPart, handleSearch }) {
+function ExerciseList({ exercises, selectedBodyPart, handleExerciseSelect }) {
   return (
     <Container>
       {exercises
@@ -11,7 +11,7 @@ function ExerciseList({ exercises, selectedBodyPart, handleSearch }) {
           <ExerciseItem
             key={index}
             exercise={filteredEx}
-            handleClick={handleSearch}
+            handleClick={handleExerciseSelect}
           />
         ))}
     </Container>

@@ -100,7 +100,8 @@ const TextWrapper = styled.div`
     line-height: 1.4;
     margin: 0;
     margin-bottom: 10px;
-    word-break: keep-all;
+    word-break: break-all;
+    letter-spacing: -0.05em;
   }
   .creator {
     display: flex;

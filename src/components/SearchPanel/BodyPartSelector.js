@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import colors from '../../style/colors';
 
 function BodyPartSelector({
-  bodyPartList,
+  bodyParts,
   handleBodyPartSelect,
   selectedBodyPart,
 }) {
   return (
     <Container>
       <ul>
-        {bodyPartList.map((bodyPart, index) => (
+        {bodyParts.map((bodyPart, index) => (
           <li
             onClick={() => handleBodyPartSelect(bodyPart)}
             key={index}

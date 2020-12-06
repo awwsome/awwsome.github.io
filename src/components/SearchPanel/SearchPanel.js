@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
-import colors from '../../style/colors';
+import React, { useState, useEffect } from 'react';
+import { dbService } from 'api/fbase';
 
-import BodyPartSelector from './BodyPartSelector';
-import ExerciseList from './ExerciseList';
+import styled, { keyframes } from 'styled-components';
+import colors from 'style/colors';
+
+import BodyPartSelector from 'components/SearchPanel/BodyPartSelector';
+import ExerciseList from 'components/SearchPanel/ExerciseList';
 
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import bodyPartList from '../../data/bodyPartList';
-import exerciseNames from '../../data/exerciseNames';
 
 SearchPanel.defaultProps = {
   panelVisible: false,
 };
 
-function SearchPanel({ panelVisible, handlePanelVisible, handleSearch }) {
+function SearchPanel({
+  panelVisible,
+  handlePanelVisible,
+  handleExerciseSelect,
+  exercises,
+}) {
+  const [bodyParts, setBodyParts] = useState([]);
+
+  const getBodyParts = async () => {
+    const bodyParts = await dbService
+      .collection('bodyParts')
+      .orderBy('order', 'desc')
+      .get();
+    bodyParts.forEach((document) => {
+      const bpObject = {
+        ...document.data(),
+        id: document.id,
+      };
+      setBodyParts((prev) => [bpObject, ...prev]);
+    });
+  };
+  useEffect(() => {
+    getBodyParts();
+    return () => {
+      setBodyParts([]);
+    };
+  }, []);
+
   const [selectedBodyPart, setSelectedBodyPart] = useState('가슴');
 
   const handleBodyPartSelect = (bodyPart) => {
     setSelectedBodyPart(bodyPart.name);
   };
-
   return (
     <SearchPanelWrapper>
       {panelVisible ? (
@@ -29,15 +54,15 @@ function SearchPanel({ panelVisible, handlePanelVisible, handleSearch }) {
           <Overlay onClick={handlePanelVisible} />
           <SearchPanelInner>
             <BodyPartSelector
-              bodyPartList={bodyPartList}
+              bodyParts={bodyParts}
               handleBodyPartSelect={handleBodyPartSelect}
               selectedBodyPart={selectedBodyPart}
             />
             <ExerciseWrapper>
               <ExerciseList
-                exercises={exerciseNames}
+                exercises={exercises}
                 selectedBodyPart={selectedBodyPart}
-                handleSearch={handleSearch}
+                handleExerciseSelect={handleExerciseSelect}
               />
             </ExerciseWrapper>
           </SearchPanelInner>

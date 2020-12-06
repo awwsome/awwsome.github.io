@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import colors from '../style/colors';
 
@@ -7,7 +6,6 @@ function Header({ handleClick, className }) {
   return (
     <HeaderWrapper className={className}>
       <Logo onClick={handleClick}>Musclebook</Logo>
-      <Link to="/config">config</Link>
     </HeaderWrapper>
   );
 }
