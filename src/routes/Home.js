@@ -17,14 +17,25 @@ import SearchPanel from 'components/SearchPanel/SearchPanel';
 import Header from 'components/Header';
 import OnBoarding from 'components/OnBoarding';
 import ExerciseHeading from 'components/ExerciseHeading';
+import Advert from 'components/Advert';
+
+// 유틸리티
+import getRandom from 'utility/getRandom';
 
 const Home = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const [adProduct, setAdProduct] = useState([]);
+  const [relativeCategory, setRelativeCategory] = useState(null);
+
   const [panelVisible, setPanelVisible] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
   const [exercises, setExercises] = useState([]);
-  const [videos, setVideos] = useState([]);
+
+  const debug = () => {
+    // getProductsFromCategory('dumbbell');
+  };
 
   const getExercises = async () => {
     const exercises = await dbService
@@ -41,6 +52,7 @@ const Home = () => {
   };
 
   const getVideos = async (term) => {
+    setVideos([]);
     const videos = await dbService
       .collection('videos')
       .where('term', '==', term)
@@ -51,6 +63,22 @@ const Home = () => {
       };
       setVideos((prev) => [videoObject, ...prev]);
     });
+  };
+
+  const getProduct = async (selectedExercise) => {
+    let productArray = [];
+    const relativeCategory = getRandom(selectedExercise.instruments);
+    const products = await dbService
+      .collection('products')
+      .where('category', '==', relativeCategory)
+      .get();
+    products.forEach((doc) => {
+      const productObject = {
+        ...doc.data(),
+      };
+      productArray.push(productObject);
+    });
+    setAdProduct(getRandom(productArray));
   };
 
   useEffect(() => {
@@ -87,6 +115,7 @@ const Home = () => {
   const handleExerciseSelect = async (exercise) => {
     await setSelectedExercise(exercise);
     getVideos(exercise.displayName);
+    getProduct(exercise);
     setPanelVisible(false);
   };
 
@@ -99,6 +128,7 @@ const Home = () => {
   return (
     <MainWrapper>
       <Header handleClick={handleReset} className="header" />
+      <button onClick={debug}>debug</button>
       {videos.length > 0 ? (
         <>
           <div className="exercise-heading">
@@ -108,6 +138,8 @@ const Home = () => {
               desc={selectedExercise.desc}
             />
           </div>
+          <p />
+          광고: {adProduct ? adProduct.name : 'loading'}
           <VideoList videos={videos} handleVideoSelect={handleVideoSelect} />
         </>
       ) : (
