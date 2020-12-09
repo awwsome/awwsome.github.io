@@ -25,7 +25,7 @@ import getRandom from 'utility/getRandom';
 // 더미데이터
 import devVideos from 'data/devVideos';
 
-const Home = () => {
+const Home = ({ history }) => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [videos, setVideos] = useState([]);
@@ -34,11 +34,6 @@ const Home = () => {
   const [panelVisible, setPanelVisible] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
   const [exercises, setExercises] = useState([]);
-
-  const debug = () => {
-    // getProductsFromCategory('dumbbell');
-    return false;
-  };
 
   const DEV_MODE = true;
 
@@ -94,12 +89,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getExercises();
-    return () => {
-      setExercises([]);
-      setSelectedExercise('');
-    };
-  }, []);
+    // getExercises();
+  });
 
   // 검색결과 클릭했을 때 모달로 영상 표시
 
@@ -119,6 +110,7 @@ const Home = () => {
   // 검색 모드 토글
 
   const handlePanelVisible = () => {
+    if (!panelVisible && exercises.length === 0) getExercises();
     setPanelVisible(!panelVisible);
   };
 
@@ -140,7 +132,6 @@ const Home = () => {
   return (
     <MainWrapper>
       <Header handleClick={handleReset} className="header" />
-      <button onClick={debug}>debug</button>
       {videos.length > 0 ? (
         <>
           <div className="exercise-heading">

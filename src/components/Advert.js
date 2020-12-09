@@ -119,7 +119,7 @@ const Notice = styled.div`
   font-size: 9px;
   padding-left: 10px;
   letter-spacing: -0.5px;
-  color: ${colors.gray6};
+  color: rgba(255, 255, 255, 0.3);
 `;
 
 export default Advert;
