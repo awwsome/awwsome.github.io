@@ -14,8 +14,8 @@ function VideoItem({ video, handleVideoSelect }) {
       <TextWrapper>
         <Title>{unescapeHtml(video.snippet.title)}</Title>
         <Creator>
-          <span />
-          {video.snippet.channelTitle}
+          <span className="dot" />
+          <span className="name">{video.snippet.channelTitle}</span>
         </Creator>
       </TextWrapper>
     </Wrapper>
@@ -62,16 +62,18 @@ const Title = styled.h5`
 `;
 
 const Creator = styled.div`
-  display: flex;
-  align-items: center;
-  color: ${colors.gray6};
-  font-size: 13px;
-  span {
+  .name {
+    color: ${colors.gray6};
+    font-size: 13px;
+  }
+  .dot {
+    top: 1px;
     display: inline-block;
     border-radius: 50%;
     width: 6px;
     height: 6px;
     margin-right: 6px;
+    margin-bottom: 2px;
     background-color: ${colors.cyan4};
   }
 `;

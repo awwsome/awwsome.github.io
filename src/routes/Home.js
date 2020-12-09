@@ -27,7 +27,6 @@ const Home = () => {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [videos, setVideos] = useState([]);
   const [adProduct, setAdProduct] = useState([]);
-  const [relativeCategory, setRelativeCategory] = useState(null);
 
   const [panelVisible, setPanelVisible] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
@@ -138,8 +137,7 @@ const Home = () => {
               desc={selectedExercise.desc}
             />
           </div>
-          <p />
-          광고: {adProduct ? adProduct.name : 'loading'}
+          <AdWrapper>{adProduct && <Advert product={adProduct} />}</AdWrapper>
           <VideoList videos={videos} handleVideoSelect={handleVideoSelect} />
         </>
       ) : (
@@ -172,4 +170,8 @@ const MainWrapper = styled.div`
   .exercise-heading {
     padding: 0 16px;
   }
+`;
+
+const AdWrapper = styled.div`
+  padding: 0 16px;
 `;
