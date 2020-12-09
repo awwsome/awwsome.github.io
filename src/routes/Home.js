@@ -90,6 +90,11 @@ const Home = ({ history }) => {
 
   useEffect(() => {
     // getExercises();
+    window.history.pushState(null, document.title, window.location.href);
+    window.addEventListener('popstate', function (event) {
+      // window.history.pushState(null, document.title, window.location.href);
+      console.log('back');
+    });
   });
 
   // 검색결과 클릭했을 때 모달로 영상 표시

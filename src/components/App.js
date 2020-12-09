@@ -1,8 +1,14 @@
 import React from 'react';
-import AppRouter from 'components/Router';
-
+import { Route, Switch } from 'react-router-dom';
+import Home from 'routes/Home';
+import Config from 'routes/Config';
 const App = () => {
-  return <AppRouter />;
+  return (
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/config" component={Config} />
+    </Switch>
+  );
 };
 
 export default App;
