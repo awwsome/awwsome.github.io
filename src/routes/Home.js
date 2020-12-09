@@ -22,6 +22,9 @@ import Advert from 'components/Advert';
 // 유틸리티
 import getRandom from 'utility/getRandom';
 
+// 더미데이터
+import devVideos from 'data/devVideos';
+
 const Home = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState(null);
@@ -34,7 +37,10 @@ const Home = () => {
 
   const debug = () => {
     // getProductsFromCategory('dumbbell');
+    return false;
   };
+
+  const DEV_MODE = true;
 
   const getExercises = async () => {
     const exercises = await dbService
@@ -52,16 +58,23 @@ const Home = () => {
 
   const getVideos = async (term) => {
     setVideos([]);
-    const videos = await dbService
-      .collection('videos')
-      .where('term', '==', term)
-      .get();
-    videos.forEach((document) => {
-      const videoObject = {
-        ...document.data(),
-      };
-      setVideos((prev) => [videoObject, ...prev]);
-    });
+    let videos = [];
+    if (DEV_MODE) {
+      setVideos(devVideos);
+      console.log(videos);
+    } else {
+      videos = await dbService
+        .collection('videos')
+        .where('term', '==', term)
+        .get();
+      console.log(videos);
+      videos.forEach((document) => {
+        const videoObject = {
+          ...document.data(),
+        };
+        setVideos((prev) => [videoObject, ...prev]);
+      });
+    }
   };
 
   const getProduct = async (selectedExercise) => {
