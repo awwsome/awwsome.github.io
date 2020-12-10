@@ -15,7 +15,7 @@ const HeaderWrapper = styled.div`
   align-items: center;
   height: 48px;
   padding: 0 16px;
-  background-color: ${colors.gray9};
+  // background-color: ${colors.gray9};
 `;
 
 const Logo = styled.h1`

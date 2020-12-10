@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { dbService } from 'api/fbase';
 import youtube from 'api/youtube';
 
-import exerciseNames from 'data/exerciseNames';
-import videos from 'data/exerciseVideos';
-
 const Config = () => {
   const [newExName, setNewExName] = useState('');
   const [newExDisplayName, setNewExDisplayName] = useState('');
@@ -67,30 +64,6 @@ const Config = () => {
     setNewExDesc('');
     setNewExBodyPart('');
   };
-  const onChange = (event) => {
-    const {
-      target: { name, value },
-    } = event;
-    // switch (name) {
-    //   case newExName:
-    //     setNewExName(value);
-    //     break;
-    //   case newExDisplayName:
-    //     setNewExDisplayName(value);
-    //     break;
-    //   case newExEngName:
-    //     setNewExEngName(value);
-    //     break;
-    //   case newExDesc:
-    //     setNewExDesc(value);
-    //     break;
-    //   case newExBodyPart:
-    //     setNewExBodyPart(value);
-    //     break;
-    //   default:
-    //     break;
-    // }
-  };
 
   const handleChange = (event) => {
     setSelectedExercise(event.target.value);
@@ -118,19 +91,6 @@ const Config = () => {
     }
   };
 
-  // const iterate = async () => {
-  //   for (let i = 0; i < exerciseNames.length; i++) {
-  //     await dbService.collection('exercises').add({
-  //       id: i,
-  //       name: exerciseNames[i].name,
-  //       displayName: exerciseNames[i].displayName,
-  //       engName: exerciseNames[i].engName,
-  //       desc: exerciseNames[i].desc,
-  //       bodyPart: exerciseNames[i].bodyPart,
-  //     });
-  //   }
-  // };
-
   return (
     <>
       <form onSubmit={onSubmit}>
@@ -139,7 +99,6 @@ const Config = () => {
           <input
             type="text"
             value={newExName}
-            onChange={onChange}
             name="newExName"
             id="newExName"
           />
@@ -149,7 +108,6 @@ const Config = () => {
           <input
             type="text"
             value={newExDisplayName}
-            onChange={onChange}
             name="newExDisplayName"
             id="newExDisplayName"
           />
@@ -159,7 +117,6 @@ const Config = () => {
           <input
             type="text"
             value={newExEngName}
-            onChange={onChange}
             name="newExEngName"
             id="newExEngName"
           />
@@ -169,7 +126,6 @@ const Config = () => {
           <input
             type="text"
             value={newExDesc}
-            onChange={onChange}
             name="newExDesc"
             id="newExDesc"
           />
@@ -179,7 +135,6 @@ const Config = () => {
           <input
             type="text"
             value={newExBodyPart}
-            onChange={onChange}
             name="newExBodyPart"
             id="newExBodyPart"
           />

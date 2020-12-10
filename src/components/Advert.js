@@ -1,18 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import colors from 'style/colors';
 import formatNumber from 'utility/formatNumber';
 
-import { faBorderNone, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Advert({ product }) {
+  const isDiscounted = useMemo(
+    () => product.price_dc && product.price_dc < product.price_origin,
+    [product],
+  );
+
   const linkStyle = {
     textDecoration: 'none',
     color: 'unset',
   };
   return (
-    <a href={product.url} target="_blank" style={linkStyle}>
+    <a href={product.url} target="_blank" style={linkStyle} rel="noreferrer">
       <Inner>
         <div className="thumbnail">
           <img src={product.thumbnail} alt={product.name} />
@@ -21,15 +26,16 @@ function Advert({ product }) {
           <TextWrapper>
             <h5 className="name">{product.name}</h5>
             <div className="price-wrapper">
-              {product.price_origin > product.price_dc && (
-                <span className="price origin">
-                  {formatNumber(product.price_origin)}
+              <span className={isDiscounted ? 'price past' : 'price current'}>
+                {formatNumber(product.price_origin)}
+              </span>
+              {isDiscounted && (
+                <span className="price current">
+                  {formatNumber(product.price_dc)}
                 </span>
               )}
-              <span className="price dc">
-                {formatNumber(product.price_dc)}원
-              </span>
-              {product.price_origin > product.price_dc && (
+              <span className="unit">원</span>
+              {isDiscounted && (
                 <span className="price percent">
                   <FontAwesomeIcon icon={faSortDown} className="icon" />
                   {(
@@ -60,11 +66,11 @@ const Inner = styled.div`
   border-radius: 8px;
   background-color: white;
   .thumbnail {
-    width: 20%;
-    height: auto;
+    max-width: 20%;
+    height: 60px;
     margin-right: 16px;
     img {
-      border-radius: 8px;
+      border-radius: 2px;
       width: 100%;
       height: 100%;
     }
@@ -80,17 +86,20 @@ const TextWrapper = styled.div`
   }
   .price-wrapper {
     margin-bottom: 6px;
+    .unit {
+      font-size: 10px;
+      color: ${colors.gray8};
+    }
     .price {
       font-family: 'Montserrat', 'Noto Sans CJK KR', sans-serif;
       font-size: 13px;
-      &.origin {
+      &.past {
         font-weight: 500;
         font-size: 11px;
         text-decoration: line-through;
         color: ${colors.gray6};
-        margin-right: 4px;
       }
-      &.dc {
+      &.current {
         font-weight: 600;
         color: ${colors.gray8};
       }

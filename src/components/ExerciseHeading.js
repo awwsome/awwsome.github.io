@@ -2,20 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import colors from '../style/colors';
 
-function ExerciseHeading({ name, engName, desc }) {
+function ExerciseHeading({ exercise, className }) {
   return (
-    <Wrapper>
-      <h3>{name}</h3>
-      <h5>{engName}</h5>
-      <div className="desc">{desc}</div>
+    <Wrapper className={className}>
+      <h3>{exercise.displayName}</h3>
+      <h5>{exercise.engName.toUpperCase()}</h5>
+      <div className="desc">{exercise.desc}</div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 16px;
-  border-radius: 10px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.700717787114846) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  padding: 80px 20px 32px;
   h3 {
     margin: 0;
     font-size: 16px;
@@ -27,6 +30,7 @@ const Wrapper = styled.div`
     font-size: 11px;
     margin: 0;
     margin-bottom: 8px;
+    letter-spacing: 1px;
     color: ${colors.gray6};
     font-weight: 400;
   }

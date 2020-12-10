@@ -72,7 +72,7 @@ const devVideos = [
     },
   },
   {
-    term: '바벨 벤치 프레스',
+    term: '스쿼트',
     kind: 'youtube#searchResult',
     etag: 'UQEsG05_82pyeRwCrwrb0b81-SU',
     id: {

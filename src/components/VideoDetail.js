@@ -8,6 +8,8 @@ import unescapeHtml from '../utility/unescapeHtml';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import Advert from 'components/Advert';
+
 VideoDetail.defaultProps = {
   videoVisible: false,
 };
@@ -16,7 +18,7 @@ VideoDetail.propTypes = {
   videoVisible: PropTypes.bool,
 };
 
-function VideoDetail({ visible, handleVideoClose, video }) {
+function VideoDetail({ visible, handleVideoClose, video, adProduct }) {
   const opts = {
     height: '210',
     width: '100%',
@@ -34,6 +36,7 @@ function VideoDetail({ visible, handleVideoClose, video }) {
           <h5 className="title">{unescapeHtml(video.snippet.title)}</h5>
           <div className="creator">{video.snippet.channelTitle}</div>
         </TextWrapper>
+        <Advert product={adProduct} />
         <CloseBtn onClick={handleVideoClose}>
           <FontAwesomeIcon icon={faChevronDown} />
           닫기
@@ -81,9 +84,9 @@ const VideoDetailInner = styled.div`
   width: 100%;
   max-width: 768px;
   border-radius: 16px 16px 0 0;
-  padding: 16px;
+  padding: 16px 16px 64px;
   box-sizing: border-box;
-  min-height: 500px;
+  // min-height: 500px;
 
   animation-duration: 0.25s;
   animation-timing-function: ease-out;
@@ -108,7 +111,7 @@ const TextWrapper = styled.div`
     align-items: center;
     color: ${colors.gray6};
     font-size: 13px;
-    margin-bottom: 10px;
+    margin-bottom: 24px;
   }
 `;
 

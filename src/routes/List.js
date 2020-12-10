@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 // Firebase & YouTube
 import { dbService } from 'api/fbase';
-import youtube from 'api/youtube';
 
 // 스타일 관련
 import styled from 'styled-components';
@@ -25,11 +24,13 @@ import getRandom from 'utility/getRandom';
 // 더미데이터
 import devVideos from 'data/devVideos';
 
-const Home = ({ history }) => {
+const List = ({ history }) => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState(null);
+  const [products, setProducts] = useState([]);
   const [videos, setVideos] = useState([]);
-  const [adProduct, setAdProduct] = useState([]);
+  const [adProduct, setAdProduct] = useState(null);
+  const [adProduct2, setAdProduct2] = useState(null);
 
   const [panelVisible, setPanelVisible] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
@@ -37,12 +38,19 @@ const Home = ({ history }) => {
 
   const DEV_MODE = true;
 
+  useEffect(() => {
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function (event) {
+      // history.go(1);
+    };
+  }, []);
+
   const getExercises = async () => {
-    const exercises = await dbService
+    const exercisesFromDB = await dbService
       .collection('exercises')
       .orderBy('id', 'desc')
       .get();
-    exercises.forEach((document) => {
+    exercisesFromDB.forEach((document) => {
       const exObject = {
         ...document.data(),
         id: document.id,
@@ -56,7 +64,6 @@ const Home = ({ history }) => {
     let videos = [];
     if (DEV_MODE) {
       setVideos(devVideos);
-      console.log(videos);
     } else {
       videos = await dbService
         .collection('videos')
@@ -73,43 +80,35 @@ const Home = ({ history }) => {
   };
 
   const getProduct = async (selectedExercise) => {
-    let productArray = [];
+    setProducts([]);
     const relativeCategory = getRandom(selectedExercise.instruments);
-    const products = await dbService
+    const productsFromDB = await dbService
       .collection('products')
       .where('category', '==', relativeCategory)
       .get();
-    products.forEach((doc) => {
+    productsFromDB.forEach((doc) => {
       const productObject = {
         ...doc.data(),
       };
-      productArray.push(productObject);
+      setProducts((prev) => [productObject, ...prev]);
     });
-    setAdProduct(getRandom(productArray));
+    setAdProduct(getRandom(products));
   };
-
-  useEffect(() => {
-    // getExercises();
-    window.history.pushState(null, document.title, window.location.href);
-    window.addEventListener('popstate', function (event) {
-      // window.history.pushState(null, document.title, window.location.href);
-      console.log('back');
-    });
-  });
 
   // 검색결과 클릭했을 때 모달로 영상 표시
 
   const handleVideoSelect = (video) => {
     setSelectedVideo(video);
-    console.log(video);
     setVideoVisible(true);
+    setAdProduct2(getRandom(products));
   };
 
   // 영상 표시 모달 닫기
 
   const handleVideoClose = () => {
     setVideoVisible(false);
-    setSelectedVideo('');
+    setSelectedVideo(null);
+    setAdProduct2(null);
   };
 
   // 검색 모드 토글
@@ -120,10 +119,9 @@ const Home = ({ history }) => {
   };
 
   // 운동 이름 선택하고 비디오 검색
-
-  const handleExerciseSelect = async (exercise) => {
-    await setSelectedExercise(exercise);
-    getVideos(exercise.displayName);
+  const handleExerciseSelect = (exercise) => {
+    setSelectedExercise(exercise);
+    getVideos(exercise.term);
     getProduct(exercise);
     setPanelVisible(false);
   };
@@ -131,24 +129,23 @@ const Home = ({ history }) => {
   // 되돌리기
 
   const handleReset = () => {
-    setVideos([]);
+    setSelectedExercise(null);
   };
 
   return (
     <MainWrapper>
-      <Header handleClick={handleReset} className="header" />
-      {videos.length > 0 ? (
-        <>
+      <Header handleClick={handleReset} className="app-header" />
+      {selectedExercise ? (
+        <div className="container">
           <div className="exercise-heading">
             <ExerciseHeading
-              name={selectedExercise.displayName}
-              engName={selectedExercise.engName.toUpperCase()}
-              desc={selectedExercise.desc}
+              exercise={selectedExercise}
+              className="exercise-heading"
             />
           </div>
           <AdWrapper>{adProduct && <Advert product={adProduct} />}</AdWrapper>
           <VideoList videos={videos} handleVideoSelect={handleVideoSelect} />
-        </>
+        </div>
       ) : (
         <OnBoarding className="onboarding" />
       )}
@@ -163,21 +160,26 @@ const Home = ({ history }) => {
           visible={videoVisible}
           video={selectedVideo}
           handleVideoClose={handleVideoClose}
+          adProduct={adProduct2}
         />
       )}
     </MainWrapper>
   );
 };
 
-export default Home;
+export default List;
 
 const MainWrapper = styled.div`
   max-width: 768px;
   margin: 0 auto;
   overflow-x: hidden;
   background-color: ${colors.gray9};
-  .exercise-heading {
-    padding: 0 16px;
+  .app-header {
+    position: absolute;
+    z-index: 101;
+  }
+  .onboarding {
+    padding-top: 48px;
   }
 `;
 
