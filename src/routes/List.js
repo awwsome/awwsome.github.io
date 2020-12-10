@@ -36,7 +36,7 @@ const List = ({ history }) => {
   const [videoVisible, setVideoVisible] = useState(false);
   const [exercises, setExercises] = useState([]);
 
-  const DEV_MODE = true;
+  const DEV_MODE = false;
 
   useEffect(() => {
     window.history.pushState(null, null, window.location.href);
@@ -50,6 +50,7 @@ const List = ({ history }) => {
       .collection('exercises')
       .orderBy('id', 'desc')
       .get();
+    // console.log(exercisesFromDB);
     exercisesFromDB.forEach((document) => {
       const exObject = {
         ...document.data(),
@@ -61,18 +62,18 @@ const List = ({ history }) => {
 
   const getVideos = async (term) => {
     setVideos([]);
-    let videos = [];
     if (DEV_MODE) {
       setVideos(devVideos);
     } else {
-      videos = await dbService
+      setVideos(devVideos);
+      const videos = await dbService
         .collection('videos')
         .where('term', '==', term)
         .get();
-      console.log(videos);
-      videos.forEach((document) => {
+      // console.log(term);
+      videos.forEach((doc) => {
         const videoObject = {
-          ...document.data(),
+          ...doc.data(),
         };
         setVideos((prev) => [videoObject, ...prev]);
       });
@@ -123,7 +124,7 @@ const List = ({ history }) => {
   // 운동 이름 선택하고 비디오 검색
   const handleExerciseSelect = (exercise) => {
     setSelectedExercise(exercise);
-    getVideos(exercise.term);
+    getVideos(exercise.displayName);
     getProduct(exercise);
     setPanelVisible(false);
   };
