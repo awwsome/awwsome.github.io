@@ -81,7 +81,9 @@ const List = ({ history }) => {
 
   const getProduct = async (selectedExercise) => {
     setProducts([]);
-    const relativeCategory = getRandom(selectedExercise.instruments);
+    const relativeCategory = selectedExercise.instruments
+      ? getRandom(selectedExercise.instruments)
+      : '';
     const productsFromDB = await dbService
       .collection('products')
       .where('category', '==', relativeCategory)

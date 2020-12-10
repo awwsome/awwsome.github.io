@@ -4,9 +4,11 @@ import colors from '../style/colors';
 
 function Header({ handleClick, className }) {
   return (
-    <HeaderWrapper className={className}>
-      <Logo onClick={handleClick}>Musclebook</Logo>
-    </HeaderWrapper>
+    <>
+      <HeaderWrapper className={className}>
+        <Logo onClick={handleClick}>Musclebook</Logo>
+      </HeaderWrapper>
+    </>
   );
 }
 
