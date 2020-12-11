@@ -83,10 +83,11 @@ const List = ({ history }) => {
   const getProduct = async (selectedExercise) => {
     setProducts([]);
     setAdProduct(null);
-    const relativeCategory = getRandom([
-      'general',
-      ...selectedExercise.instruments,
-    ]);
+    // 선택된 운동에 장비 정보가 없으면 general 카테고리 안에서만 상품 추출
+    const productArray = selectedExercise.instruments
+      ? ['general', ...selectedExercise.instruments]
+      : ['general'];
+    const relativeCategory = getRandom(productArray);
     const productsFromDB = await dbService
       .collection('products')
       .where('category', '==', relativeCategory)
