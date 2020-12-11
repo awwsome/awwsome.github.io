@@ -73,7 +73,7 @@ const VideoDetailOverlay = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.8);
 `;
 
 const VideoDetailInner = styled.div`

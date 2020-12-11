@@ -19,9 +19,7 @@ function Advert({ product }) {
   return (
     <a href={product.url} target="_blank" style={linkStyle} rel="noreferrer">
       <Inner>
-        <div className="thumbnail">
-          <img src={product.thumbnail} alt={product.name} />
-        </div>
+        <img src={product.thumbnail} alt={product.name} className="thumbnail" />
         {product && (
           <TextWrapper>
             <h5 className="name">{product.name}</h5>
@@ -69,11 +67,6 @@ const Inner = styled.div`
     max-width: 20%;
     height: 60px;
     margin-right: 16px;
-    img {
-      border-radius: 2px;
-      width: 100%;
-      height: 100%;
-    }
   }
 `;
 
