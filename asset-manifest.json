@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/musclebook/static/css/main.2b7f0e74.chunk.css",
-    "main.js": "/musclebook/static/js/main.ee90b94d.chunk.js",
-    "main.js.map": "/musclebook/static/js/main.ee90b94d.chunk.js.map",
+    "main.js": "/musclebook/static/js/main.c00ebe99.chunk.js",
+    "main.js.map": "/musclebook/static/js/main.c00ebe99.chunk.js.map",
     "runtime-main.js": "/musclebook/static/js/runtime-main.0c40b217.js",
     "runtime-main.js.map": "/musclebook/static/js/runtime-main.0c40b217.js.map",
     "static/css/2.679831fc.chunk.css": "/musclebook/static/css/2.679831fc.chunk.css",
@@ -19,6 +19,6 @@
     "static/css/2.679831fc.chunk.css",
     "static/js/2.b190012b.chunk.js",
     "static/css/main.2b7f0e74.chunk.css",
-    "static/js/main.ee90b94d.chunk.js"
+    "static/js/main.c00ebe99.chunk.js"
   ]
 }
