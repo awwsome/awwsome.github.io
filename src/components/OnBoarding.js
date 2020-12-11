@@ -10,7 +10,7 @@ function OnBoarding({ className }) {
       <Text>
         <div>오늘은</div>
         <div>어디를</div>
-        <div>조져볼까</div>
+        <div>조질까</div>
       </Text>
     </Wrapper>
   );
@@ -41,8 +41,9 @@ const Wrapper = styled.div`
 
 const Text = styled.div`
   position: absolute;
-  left: 10%;
-  top: 10%;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
   div {
     font-weight: 700;
     font-size: 48px;
