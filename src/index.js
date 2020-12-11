@@ -4,6 +4,13 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './components/App';
 
+import TagManager from 'react-gtm-module';
+
+const tagManagerArgs = {
+  gtmId: 'GTM-000000',
+};
+TagManager.initialize(tagManagerArgs);
+
 ReactDOM.render(
   <BrowserRouter>
     <App />
