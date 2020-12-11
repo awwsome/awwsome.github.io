@@ -6,7 +6,7 @@ import Config from 'routes/Config';
 const App = () => {
   return (
     <Switch>
-      <Route exact path="/" component={List} />
+      <Route exact path="/musclebook" component={List} />
       <Route exact path="/config" component={Config} />
     </Switch>
   );
