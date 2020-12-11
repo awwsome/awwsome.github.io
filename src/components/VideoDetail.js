@@ -36,7 +36,7 @@ function VideoDetail({ visible, handleVideoClose, video, adProduct }) {
           <h5 className="title">{unescapeHtml(video.snippet.title)}</h5>
           <div className="creator">{video.snippet.channelTitle}</div>
         </TextWrapper>
-        <Advert product={adProduct} />
+        {adProduct && <Advert product={adProduct} />}
         <CloseBtn onClick={handleVideoClose}>
           <FontAwesomeIcon icon={faChevronDown} />
           닫기

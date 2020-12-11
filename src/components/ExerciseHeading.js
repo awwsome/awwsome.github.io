@@ -13,18 +13,15 @@ function ExerciseHeading({ exercise, className }) {
 }
 
 const Wrapper = styled.div`
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.700717787114846) 0%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  padding: 80px 20px 32px;
+  background: linear-gradient(180deg, ${colors.cyan9} 0%, ${colors.gray9} 70%);
+  padding: 100px 20px 32px;
   h3 {
     margin: 0;
-    font-size: 16px;
-    margin-bottom: 6px;
+    font-size: 28px;
+    margin-bottom: 10px;
     color: #fff;
-    font-weight: 500;
+    font-weight: 700;
+    letter-spacing: -1px;
   }
   h5 {
     font-size: 11px;

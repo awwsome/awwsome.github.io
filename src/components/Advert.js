@@ -98,6 +98,7 @@ const TextWrapper = styled.div`
         font-size: 11px;
         text-decoration: line-through;
         color: ${colors.gray6};
+        margin-right: 4px;
       }
       &.current {
         font-weight: 600;

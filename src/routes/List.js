@@ -82,9 +82,11 @@ const List = ({ history }) => {
 
   const getProduct = async (selectedExercise) => {
     setProducts([]);
-    const relativeCategory = selectedExercise.instruments
-      ? getRandom(selectedExercise.instruments)
-      : '';
+    setAdProduct(null);
+    const relativeCategory = getRandom([
+      'general',
+      ...selectedExercise.instruments,
+    ]);
     const productsFromDB = await dbService
       .collection('products')
       .where('category', '==', relativeCategory)
@@ -95,7 +97,8 @@ const List = ({ history }) => {
       };
       setProducts((prev) => [productObject, ...prev]);
     });
-    setAdProduct(getRandom(products));
+    let adProduct = getRandom(products);
+    setAdProduct(adProduct);
   };
 
   // 검색결과 클릭했을 때 모달로 영상 표시
